@@ -1,17 +1,14 @@
-package com.example.taskmanagerhw13.fragment;
+package com.example.taskmanagerhw14.fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +18,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.taskmanagerhw13.R;
-import com.example.taskmanagerhw13.Repository.TasksRepository;
-import com.example.taskmanagerhw13.Utils.DisplayTools;
-import com.example.taskmanagerhw13.Utils.TaskState;
-import com.example.taskmanagerhw13.model.Task;
+import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.TasksRepository;
+import com.example.taskmanagerhw14.Utils.TaskState;
+import com.example.taskmanagerhw14.model.Task;
 
 import java.util.Date;
 import java.util.UUID;

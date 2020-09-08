@@ -1,4 +1,4 @@
-package com.example.taskmanagerhw13.activity;
+package com.example.taskmanagerhw14.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -13,12 +13,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.taskmanagerhw13.R;
-import com.example.taskmanagerhw13.Repository.TasksRepository;
-import com.example.taskmanagerhw13.Repository.UserRepository;
-import com.example.taskmanagerhw13.Utils.TaskState;
-import com.example.taskmanagerhw13.fragment.TaskDetailFragment;
-import com.example.taskmanagerhw13.fragment.TasksFragment;
+import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.TasksRepository;
+import com.example.taskmanagerhw14.Repository.UserRepository;
+import com.example.taskmanagerhw14.Utils.TaskState;
+import com.example.taskmanagerhw14.fragment.TaskDetailFragment;
+import com.example.taskmanagerhw14.fragment.TasksFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

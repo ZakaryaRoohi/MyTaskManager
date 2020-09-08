@@ -1,9 +1,7 @@
-package com.example.taskmanagerhw13.activity;
+package com.example.taskmanagerhw14.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.taskmanagerhw13.R;
-import com.example.taskmanagerhw13.fragment.LoginFragment;
-import com.example.taskmanagerhw13.fragment.SignInFragment;
-import com.example.taskmanagerhw13.fragment.TasksFragment;
-import com.example.taskmanagerhw13.fragment.UserListFragment;
+import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.fragment.LoginFragment;
+import com.example.taskmanagerhw14.fragment.SignInFragment;
+import com.example.taskmanagerhw14.fragment.UserListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements SignInFragment.Callbacks, LoginFragment.Callbacks{

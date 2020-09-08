@@ -31,7 +31,7 @@ private FragmentManager mFragmentManager;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mLoginFragment = LoginFragment.newInstance();
+        mLoginFragment = LoginFragment.newInstance();
 //        mSignInFragment = SignInFragment.newInstance();
 //        mUserListFragment=UserListFragment.newInstance();
 //

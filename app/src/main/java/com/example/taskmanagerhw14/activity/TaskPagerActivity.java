@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.IRepository;
+import com.example.taskmanagerhw14.Repository.TaskDBRepository;
 import com.example.taskmanagerhw14.Repository.TasksRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
@@ -35,15 +37,17 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskDetailFr
     public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
     public static final String BUNDLE_USERNAME = "com.example.taskmanagerhw13.activity.bundleUsername";
-    private TasksRepository mTasksRepository;
+//    private TasksRepository mTasksRepository;
+private IRepository mTasksRepository;
+
     private ViewPager2 viewPager;
     private String mUsername;
     private UserRepository mUserRepository;
     private TasksFragment mTasksFragmentDone;
     private TasksFragment mTasksFragmentDoing;
     private TasksFragment mTasksFragmentTodo;
-
     String[] titles = {"Done", "Doing", "Todo"};
+
     private FragmentStateAdapter pagerAdapter;
 
     public static Intent newIntent(Context context, String username) {
@@ -70,7 +74,8 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskDetailFr
         mTasksFragmentTodo = TasksFragment.newInstance(TaskState.TODO, mUsername);
 
         mUserRepository = UserRepository.getInstance();
-        mTasksRepository = TasksRepository.getInstance();
+//        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(this);
         findViews();
         setListeners();
 
@@ -133,7 +138,8 @@ public class TaskPagerActivity extends AppCompatActivity implements TaskDetailFr
 //            tasksFragment1.updateUI();
 //        }
 //        viewPager.setAdapter(pagerAdapter);
-        mTasksRepository = TasksRepository.getInstance();
+//        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(this);
         switch (taskState) {
             case DONE:
                 mTasksFragmentDone.updateUI();

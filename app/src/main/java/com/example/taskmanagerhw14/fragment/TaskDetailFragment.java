@@ -19,6 +19,8 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.IRepository;
+import com.example.taskmanagerhw14.Repository.TaskDBRepository;
 import com.example.taskmanagerhw14.Repository.TasksRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.model.Task;
@@ -38,7 +40,9 @@ public class TaskDetailFragment extends DialogFragment {
     public static final int REQUEST_CODE_DATE_PICKER = 0;
     public static final String BUNDLE_TASK_ID = "bundleTaskId";
 
-    private TasksRepository mTasksRepository;
+//    private TasksRepository mTasksRepository;
+private IRepository mTasksRepository;
+
     private Task mTask;
 
     private EditText mEditTextTaskTitle;
@@ -56,7 +60,12 @@ public class TaskDetailFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-
+    public static TaskDetailFragment newInstance() {
+        TaskDetailFragment fragment = new TaskDetailFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
     public static TaskDetailFragment newInstance(UUID taskId) {
         TaskDetailFragment fragment = new TaskDetailFragment();
         Bundle args = new Bundle();
@@ -68,13 +77,12 @@ public class TaskDetailFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if(savedInstanceState!=null){
             mTaskId = (UUID) savedInstanceState.getSerializable(BUNDLE_TASK_ID);
         }else{
             mTaskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
         }
-        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(getActivity());
         mTask = (Task) mTasksRepository.get(mTaskId);
 
     }

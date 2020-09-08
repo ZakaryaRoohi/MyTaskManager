@@ -68,12 +68,7 @@ public class TasksRepository implements Serializable {
         return taskList;
     }
 
-    public void addTask() {
-        Task task = new Task();
-        task.setTaskTitle("Task : " + (sTasksRepository.getList().size() + 1));
-//        task.setTaskState(randomTaskState());
-        mTasks.add(task);
-    }
+
 
     public void addTask(Task task) {
 //        task.setTaskTitle("Task : " + (sTasksRepository.getList().size()+1));

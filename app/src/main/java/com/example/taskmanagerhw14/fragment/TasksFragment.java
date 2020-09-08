@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.IRepository;
+import com.example.taskmanagerhw14.Repository.TaskDBRepository;
 import com.example.taskmanagerhw14.Repository.TasksRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
@@ -39,7 +41,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public static final String ARG_USERNAME = "ArgsUsername";
     public static final String BUNDLE_USERNAME = "bundleUsername";
     public static final String BUNDLE_TASK_STATE = "BundleTaskState";
-    private TasksRepository mTasksRepository;
+    //    private TasksRepository mTasksRepository;
+    private IRepository mTasksRepository;
+
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
     private FloatingActionButton mFloatingActionButtonAdd;
@@ -73,8 +77,8 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(getActivity());
+//        mTasksRepository = TasksRepository.getInstance();
         mUserRepository = UserRepository.getInstance();
 
     }
@@ -90,7 +94,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             mUsername = getArguments().getString(ARG_USERNAME);
             mTaskState = (TaskState) getArguments().getSerializable(ARG_TASK_STATE);
         }
-        mTasksRepository = TasksRepository.getInstance();
+//        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(getActivity());
+
         mUserRepository = UserRepository.getInstance();
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
@@ -130,9 +136,10 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
 //                taskDetailFragment.show(getFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
 
 //                mCallbacks.onAddTaskClicked();
-                Task newTask = new Task(mUsername);
-                mTasksRepository.addTask(newTask);
-                TaskDetailFragment taskDetailFragment = TaskDetailFragment.newInstance(newTask.getId());
+//                Task newTask = new Task(mUsername);
+//                mTasksRepository.addTask(newTask);
+//                mTasksRepository.insert(newTask);
+                TaskDetailFragment taskDetailFragment = TaskDetailFragment.newInstance(mUsername);
                 taskDetailFragment.show(getActivity().getSupportFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
                 updateUI();
             }
@@ -205,25 +212,25 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
                 }
             });
         }
+
         private String getReportText() {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            String dateString = simpleDateFormat.format(mTask.getTaskDate()) ;
-
+            String dateString = simpleDateFormat.format(mTask.getTaskDate());
 
 
             String titleString = mTask.getTaskTitle() == null ?
-                   "there is no Title" :
+                    "there is no Title" :
                     "Task Title: " + mTask.getTaskTitle();
             String descriptionString = mTask.getTaskDescription() == null ?
                     " there is no description" :
                     " Task description: " + mTask.getTaskTitle();
 
-            String report = ("Task Report:"+
-                    titleString+
-                    descriptionString+
-                    "task state: "+mTask.getTaskDescription()+
+            String report = ("Task Report:" +
+                    titleString +
+                    descriptionString +
+                    "task state: " + mTask.getTaskDescription() +
                     dateString
-                    );
+            );
 
             return report;
         }

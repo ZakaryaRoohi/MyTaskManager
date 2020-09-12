@@ -15,8 +15,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
+import com.example.taskmanagerhw14.Utils.UserType;
 import com.example.taskmanagerhw14.activity.TaskPagerActivity;
+import com.example.taskmanagerhw14.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +33,7 @@ public class LoginFragment extends Fragment {
     private Button mButtonLogIn;
     private Button mButtonSignIn;
     private Callbacks mCallbacks;
-    private UserRepository mUserRepository;
+    private UserDBRoomRepository mUserDBRoomRepository;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -46,7 +49,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserRepository = UserRepository.getInstance();
+
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
+//        User admin = new User("admin","1", UserType.ADMIN);
+//        mUserDBRoomRepository.add(admin);
     }
 
     @Override
@@ -83,10 +89,14 @@ public class LoginFragment extends Fragment {
                 String password = mEditTextPassword.getText().toString();
                 if (username.equals("") | password.equals("")) {
                     Toast.makeText(getActivity(), "please Username and Password.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = TaskPagerActivity.newIntent(getContext(),username);
+                }
+                else {
 
-                    if(mUserRepository.checkUserExist(username,password))
+                    Long userId = UserDBRoomRepository.checkUserExist(mUserDBRoomRepository,username,password);
+                    Toast.makeText(getActivity(), "userId" + mUserDBRoomRepository.getList().size(), Toast.LENGTH_SHORT).show();
+
+                    Intent intent = TaskPagerActivity.newIntent(getContext(),userId);
+                    if(userId!=null)
                     startActivity(intent);
                     else
                         Toast.makeText(getActivity(), "your username or password is wrong", Toast.LENGTH_SHORT).show();

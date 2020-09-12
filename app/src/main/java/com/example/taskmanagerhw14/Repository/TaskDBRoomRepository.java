@@ -26,10 +26,10 @@ public class TaskDBRoomRepository {
             sTaskRepository = new TaskDBRoomRepository();
         return sTaskRepository;
     }
-    public List<Task> getUserTakLIstByState(TaskState taskState , Long userID){
+    public List<Task> getUserTakListByState(TaskState taskState , Long userID){
         return mDataBase.taskDataBaseDAO().getUserTasksByState(taskState,userID);
     }
-    public List<Task> getListByState(TaskState taskState ){
+    public List<Task> getTaskListByState(TaskState taskState ){
         return mDataBase.taskDataBaseDAO().getTasks(taskState);
     }
 
@@ -38,7 +38,7 @@ public class TaskDBRoomRepository {
     }
 
 
-    public void add(Task task) {
+    public void insert(Task task) {
         mDataBase.taskDataBaseDAO().insertTask(task);
     }
 
@@ -47,4 +47,17 @@ public class TaskDBRoomRepository {
         mDataBase.taskDataBaseDAO().deleteTask(task);
     }
 
+    public void update(Task task){
+        mDataBase.taskDataBaseDAO().updateTask(task);
+
+    }
+    public void removeAllTasks() {
+        mDataBase.taskDataBaseDAO().deleteTasks();
+    }
+
+    public void removeAllUserTasks(long userId) {
+        for (Task task : mDataBase.taskDataBaseDAO().getUserTasks(userId)) {
+            remove(task);
+        }
+    }
 }

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.database.TaskBaseHelper;
 import com.example.taskmanagerhw14.database.TaskDBSchema;
-import com.example.taskmanagerhw14.database.coursorwrapper.TaskCursorWrapper;
+
 import com.example.taskmanagerhw14.model.Task;
 
 import java.util.ArrayList;

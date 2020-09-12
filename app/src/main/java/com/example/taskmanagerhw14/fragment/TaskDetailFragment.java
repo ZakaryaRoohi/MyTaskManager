@@ -19,14 +19,12 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.taskmanagerhw14.R;
-import com.example.taskmanagerhw14.Repository.IRepository;
-import com.example.taskmanagerhw14.Repository.TaskDBRepository;
-import com.example.taskmanagerhw14.Repository.TasksRepository;
+
+import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.model.Task;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +39,7 @@ public class TaskDetailFragment extends DialogFragment {
     public static final String BUNDLE_TASK_ID = "bundleTaskId";
 
 //    private TasksRepository mTasksRepository;
-private IRepository mTasksRepository;
+private TaskDBRoomRepository mTaskDBRoomRepository;
 
     private Task mTask;
 
@@ -54,22 +52,17 @@ private IRepository mTasksRepository;
     private Button mButtonSave;
     private Button mButtonDiscard;
     private Callbacks mCallbacks;
-    private UUID mTaskId;
+    private Long mTaskId;
 
     public TaskDetailFragment() {
         // Required empty public constructor
     }
 
-    public static TaskDetailFragment newInstance() {
+
+    public static TaskDetailFragment newInstance(long taskId) {
         TaskDetailFragment fragment = new TaskDetailFragment();
         Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-    public static TaskDetailFragment newInstance(UUID taskId) {
-        TaskDetailFragment fragment = new TaskDetailFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_TASK_ID, taskId);
+        args.putLong(ARG_TASK_ID, taskId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,19 +71,18 @@ private IRepository mTasksRepository;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null){
-            mTaskId = (UUID) savedInstanceState.getSerializable(BUNDLE_TASK_ID);
+            mTaskId =  savedInstanceState.getLong(BUNDLE_TASK_ID);
         }else{
-            mTaskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
+            mTaskId =  getArguments().getLong(ARG_TASK_ID);
         }
-        mTasksRepository = TaskDBRepository.getInstance(getActivity());
-        mTask = (Task) mTasksRepository.get(mTaskId);
-
+        mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
+        mTask = mTaskDBRoomRepository.get(mTaskId);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(BUNDLE_TASK_ID, mTaskId);
+        outState.putLong(BUNDLE_TASK_ID, mTaskId);
     }
 
     @Override
@@ -160,16 +152,6 @@ private IRepository mTasksRepository;
         }
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-////        TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-////
-////        tasksFragment.updateUI();
-//
-//        mCallbacks.onTaskUpdated();
-//    }
-
     private void setListeners() {
         mButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,15 +169,13 @@ private IRepository mTasksRepository;
                 else {
                     mTask.setTaskTitle(mEditTextTaskTitle.getText().toString());
                     mTask.setTaskDescription((mEditTextDescription.getText().toString()));
-                    if (mTasksRepository.checkTaskExists(mTask))
-                        Toast.makeText(getActivity(), "this Task Already exist!", Toast.LENGTH_SHORT).show();
-                    else {
+
                         updateTask();
-                        mCallbacks.updateTasksFragment(mTask.getTaskState(), mTask.getUsername());
+                        mCallbacks.onSaveButtonClicked(mTask.getTaskState(), mTask.getUserId().toString());
                         getDialog().cancel();
 //                    TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 //                    tasksFragment.updateUI();
-                    }
+
                 }
             }
         });
@@ -246,30 +226,14 @@ private IRepository mTasksRepository;
     }
 
     private void updateTask() {
-        mTasksRepository.update(mTask);
+        mTaskDBRoomRepository.update(mTask);
 //        mCallbacks.onTaskUpdated();
 
     }
 
     public interface Callbacks {
-        void updateTasksFragment(TaskState taskState, String username);
+        void onSaveButtonClicked(TaskState taskState, String username);
     }
-//    @Override
-//    public void onStart()
-//    {
-//        super.onStart();
-//        // lock screen;
-//        DisplayTools.Orientation orientation = DisplayTools.getDisplatOrientation(getActivity());
-//        getActivity().setRequestedOrientation(orientation == DisplayTools.Orientation.LANDSCAPE
-//                ? ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-//                : ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-//    }
-//    @Override
-//    public void onStop()
-//    {
-//        super.onStop();
-//        // unlock screen;
-//        getActivity().setRequestedOrientation(getActivity().getResources().getConfiguration().orientation);
-//    }
+//
 
 }

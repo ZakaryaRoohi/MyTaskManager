@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
 import com.example.taskmanagerhw14.Utils.UserType;
 import com.example.taskmanagerhw14.model.User;
@@ -30,7 +31,7 @@ import java.util.List;
 public class UserListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private UserRepository mUserRepository;
+    private UserDBRoomRepository mUserDBRoomRepository;
     private UserAdapter mAdapter;
 
     public UserListFragment() {
@@ -48,7 +49,7 @@ public class UserListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserRepository = UserRepository.getInstance();
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
     }
 
     @Override
@@ -94,7 +95,7 @@ public class UserListFragment extends Fragment {
 
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            mUserRepository.deleteUser(mUser);
+                            mUserDBRoomRepository.remove(mUser);
                             updateUI();
                         }
                     });
@@ -111,8 +112,8 @@ public class UserListFragment extends Fragment {
 
         public void bindUser(User user) {
             mUser = user;
-            mTextViewUsername.setText(mUser.getUsername());
-            mTextViewDateUserCreate.setText(mUser.getUserDateCreated().toString());
+            mTextViewUsername.setText(mUser.getUserName());
+            mTextViewDateUserCreate.setText(mUser.getDateCreated().toString());
 
             mImageViewUserRole.setImageResource(setUserTypeImage(mUser));
         }
@@ -157,7 +158,7 @@ public class UserListFragment extends Fragment {
         }
     }
     public void updateUI(){
-        List<User> users = mUserRepository.getList();
+        List<User> users = mUserDBRoomRepository.getList();
 
         if (mAdapter == null) {
             mAdapter = new UserAdapter(users);

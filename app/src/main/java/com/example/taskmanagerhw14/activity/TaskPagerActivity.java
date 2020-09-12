@@ -68,13 +68,14 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
             mUserId = intent.getLongExtra(EXTRA_BUNDLE_USER_ID,0);
 
         }
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(this);
+
         this.setTitle(mUserDBRoomRepository.get(mUserId).getUserName());
 
         mTasksFragmentDone = TasksFragment.newInstance(TaskState.DONE, mUserId);
         mTasksFragmentDoing = TasksFragment.newInstance(TaskState.DOING, mUserId);
         mTasksFragmentTodo = TasksFragment.newInstance(TaskState.TODO, mUserId);
 
-        mUserDBRoomRepository = UserDBRoomRepository.getInstance(this);
 //        mTasksRepository = TasksRepository.getInstance();
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(this);
         findViews();
@@ -118,7 +119,7 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
 
 
     @Override
-    public void updateTasksFragment(TaskState taskState, String username) {
+    public void onSaveButtonClicked(TaskState taskState, String username) {
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(this);
         switch (taskState) {
             case DONE:
@@ -131,10 +132,16 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
                 mTasksFragmentTodo.updateUI();
                 break;
         }
+//        TasksFragment tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//        tasksFragment.updateUI();
 
 
     }
 
+    @Override
+    public void updateTasksFragment(TaskState taskState, String username) {
+
+    }
 
 
     private class TaskPagerAdapter extends FragmentStateAdapter {
@@ -201,11 +208,11 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
 //                        viewPager.setAdapter(pagerAdapter);
                         switch (mUserDBRoomRepository.getUserType(mUserId)) {
                             case USER:
-                                mTasksRepository.deleteUserTask(mUserId);
+                                mTaskDBRoomRepository.removeAllUserTasks(mUserId);
                                 viewPager.setAdapter(pagerAdapter);
                                 break;
                             case ADMIN:
-                                mTasksRepository.clearTaskRepository();
+                                mTaskDBRoomRepository.removeAllTasks();
                                 viewPager.setAdapter(pagerAdapter);
                                 break;
                         }
@@ -230,11 +237,6 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
     @Override
     protected void onResume() {
         super.onResume();
-//        mTasksFragmentDone = TasksFragment.newInstance(TaskState.DONE, mUsername);
-//        mTasksFragmentDoing = TasksFragment.newInstance(TaskState.DOING, mUsername);
-//        mTasksFragmentTodo = TasksFragment.newInstance(TaskState.TODO, mUsername);
-//        mTasksFragmentDone.updateUI();
-//        mTasksFragmentDoing.updateUI();
-//        mTasksFragmentTodo.updateUI();
+
     }
 }

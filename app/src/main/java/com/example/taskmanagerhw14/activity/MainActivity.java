@@ -88,9 +88,10 @@ public class MainActivity extends AppCompatActivity
     public void onSinInClicked() {
         FragmentManager fragmentManager = getSupportFragmentManager();
 //        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, new SignInFragment())
+                .replace(R.id.fragment_container, SignInFragment.newInstance())
                 .commit();
 
     }

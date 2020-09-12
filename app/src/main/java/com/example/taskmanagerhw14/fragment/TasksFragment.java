@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 
 import com.example.taskmanagerhw14.R;
-import com.example.taskmanagerhw14.Repository.TaskDBRepository;
 import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
@@ -39,7 +38,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public static final String ADD_TASK_FRAGMENT_DIALOG_TAG = "AddTaskFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
     public static final String ARG_USER_ID = "ArgsUsername";
-    public static final String BUNDLE_USERNAME = "bundleUsername";
+    public static final String BUNDLE_USER_ID = "bundleUsername";
     public static final String BUNDLE_TASK_STATE = "BundleTaskState";
 
     private TaskDBRoomRepository mTaskDBRoomRepository;
@@ -86,7 +85,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mUserId = savedInstanceState.getLong(BUNDLE_USERNAME);
+            mUserId = savedInstanceState.getLong(BUNDLE_USER_ID);
             mTaskState = (TaskState) savedInstanceState.getSerializable(BUNDLE_TASK_STATE);
 
         } else {
@@ -96,7 +95,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
 //        mTasksRepository = TasksRepository.getInstance();
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
 
-        mUserDBRoomRepository = UserDBRoomRepository.getInstance();
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         findViews(view);
@@ -272,11 +271,11 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         if (mUserDBRoomRepository.getUserType(mUserId) != null) {
             switch (mUserDBRoomRepository.getUserType(mUserId)) {
                 case USER:
-                    tasks = mTaskDBRoomRepository.getUserTakLIstByState(mTaskState, mUserId);
+                    tasks = mTaskDBRoomRepository.getUserTakListByState(mTaskState, mUserId);
                     adapter(tasks);
                     break;
                 case ADMIN:
-                    tasks = mTaskDBRoomRepository.getList(mTaskState);
+                    tasks = mTaskDBRoomRepository.getTaskListByState(mTaskState);
                     adapter(tasks);
             }
         }
@@ -295,7 +294,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         if (tasks.size() == 0) {
             mLinearLayout1.setVisibility(View.GONE);
             mLinearLayout2.setVisibility(View.VISIBLE);
-        } else if (mTaskDBRoomRepository.getList().size() != 0) {
+        } else {
             mLinearLayout1.setVisibility(View.VISIBLE);
             mLinearLayout2.setVisibility(View.GONE);
         }
@@ -311,7 +310,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(BUNDLE_USERNAME, mUserId);
+        outState.putLong(BUNDLE_USER_ID, mUserId);
         outState.putSerializable(BUNDLE_TASK_STATE, mTaskState);
     }
 }

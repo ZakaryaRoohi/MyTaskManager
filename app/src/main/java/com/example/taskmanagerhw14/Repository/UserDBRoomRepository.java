@@ -21,13 +21,16 @@ public class UserDBRoomRepository {
         mDatabase = Room.databaseBuilder(sContext, TaskManagerDB.class, "UserDB.db")
                 .allowMainThreadQueries()
                 .build();
+
     }
     public static UserDBRoomRepository getInstance(Context context) {
         sContext = context.getApplicationContext();
         if (sUserRepository == null){
             sUserRepository = new UserDBRoomRepository();
-            User admin = new User("admin","admin", UserType.ADMIN);
+            if (sUserRepository.getList().size()==0){
+            User admin = new User("admin","1", UserType.ADMIN);
         sUserRepository.add(admin);}
+        }
         return sUserRepository;
     }
 
@@ -64,5 +67,12 @@ public class UserDBRoomRepository {
     public UserType getUserType(Long userId){
         User findUser = mDatabase.userDateBaseDAO().getUser(userId);
         return findUser.getUserType();
+    }
+    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository,String username, String password) {
+        for (User user : userDBRoomRepository.getList()) {
+            if (user.getUserName().equals(username) && user.getPassword().equals(password))
+                return user.getId();
+        }
+        return null;
     }
 }

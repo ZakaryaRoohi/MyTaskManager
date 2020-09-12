@@ -1,11 +1,13 @@
 package com.example.taskmanagerhw14.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +19,19 @@ import android.widget.Toast;
 
 
 import com.example.taskmanagerhw14.R;
-import com.example.taskmanagerhw14.Repository.IRepository;
-import com.example.taskmanagerhw14.Repository.TaskDBRepository;
-import com.example.taskmanagerhw14.Repository.TasksRepository;
+
+import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
+import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.model.Task;
+import com.example.taskmanagerhw14.model.User;
+
+import java.util.Date;
 
 
 public class AddTaskFragmentFragment extends DialogFragment {
 
-    public static final String ARG_USERNAME = "argUsername";
+    public static final String ARG_USER_ID = "argUsername";
     public static final String DIALOG_FRAGMENT_TAG = "Dialog";
     public static final int REQUEST_CODE_DATE_PICKER = 0;
     public static final String BUNDLE_TASK_USERNAME = "bundleTaskUsername";
@@ -40,16 +45,17 @@ public class AddTaskFragmentFragment extends DialogFragment {
     private Button mButtonDiscard;
     private Task mTask;
     private Callbacks mCallbacks;
-    private String mUsername;
-    private IRepository mTasksRepository;
+    private Long mUserId;
+    private TaskDBRoomRepository mTaskDBRoomRepository;
+    private UserDBRoomRepository mUserDBRoomRepository;
     public AddTaskFragmentFragment() {
         // Required empty public constructor
     }
 
-    public static AddTaskFragmentFragment newInstance(String username) {
+    public static AddTaskFragmentFragment newInstance(Long userId) {
         AddTaskFragmentFragment fragment = new AddTaskFragmentFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_USERNAME, username);
+        args.putLong(ARG_USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,10 +64,14 @@ public class AddTaskFragmentFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mUsername = getArguments().getString(ARG_USERNAME);
+            mUserId = getArguments().getLong(ARG_USER_ID);
         }
-        mTask = new Task(mUsername);
-        mTasksRepository = TaskDBRepository.getInstance(getActivity());
+        mUserDBRoomRepository= UserDBRoomRepository.getInstance(getContext());
+        User user =mUserDBRoomRepository.get(mUserId);
+                mTask = new Task(user);
+        mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
+        Toast.makeText(getContext(), ":  " + mUserId, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -74,6 +84,7 @@ public class AddTaskFragmentFragment extends DialogFragment {
         setListeners();
         return view;
     }
+
     private void findViews(View view) {
         mEditTextTaskTitle = view.findViewById(R.id.edit_text_task_title);
         mEditTextDescription = view.findViewById(R.id.edit_text_task_description);
@@ -102,9 +113,9 @@ public class AddTaskFragmentFragment extends DialogFragment {
                 else {
                     mTask.setTaskTitle(mEditTextTaskTitle.getText().toString());
                     mTask.setTaskDescription((mEditTextDescription.getText().toString()));
-                    mTask.setUser(mUsername);
-                    mTasksRepository.insert(mTask);
-                    mCallbacks.updateTasksFragment(mTask.getTaskState(), mTask.getUsername());
+                    mTask.setUserId(mUserId);
+                    mTaskDBRoomRepository.insert(mTask);
+                    mCallbacks.updateTasksFragment(mTask.getTaskState(), mTask.getUserId().toString());
                     getDialog().cancel();
 //                    TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 //                    tasksFragment.updateUI();
@@ -140,10 +151,11 @@ public class AddTaskFragmentFragment extends DialogFragment {
         });
 
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(BUNDLE_TASK_USERNAME, mUsername);
+        outState.putSerializable(BUNDLE_TASK_USERNAME, mUserId);
     }
 
     @Override
@@ -164,8 +176,23 @@ public class AddTaskFragmentFragment extends DialogFragment {
     }
 
 
-
     public interface Callbacks {
         void updateTasksFragment(TaskState taskState, String username);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK || data == null)
+            return;
+
+        if (requestCode == REQUEST_CODE_DATE_PICKER) {
+            //get response from intent extra, which is user selected date
+            Date userSelectedDate = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_USER_SELECTED_DATE);
+
+            mTask.setTaskDate(userSelectedDate);
+            mButtonDate.setText(mTask.getTaskDate().toString());
+
+        }
     }
 }

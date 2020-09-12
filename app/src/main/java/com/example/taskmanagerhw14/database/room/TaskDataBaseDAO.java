@@ -26,6 +26,9 @@ public interface TaskDataBaseDAO {
     @Query("SELECT * FROM taskTable")
     List<Task> getTasks();
 
+    @Query("SELECT * FROM taskTable WHERE state=:taskState")
+    List<Task> getTasks(TaskState taskState);
+
     @Query("SELECT * FROM taskTable WHERE id=:id")
     Task getTask(Long id);
 

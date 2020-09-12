@@ -37,7 +37,7 @@ public class Task implements Serializable {
     private TaskState mTaskState;
 
     @ColumnInfo(name = "date")
-    private String mTaskDate;
+    private Date mTaskDate;
 
     public Task() {
     }
@@ -45,6 +45,7 @@ public class Task implements Serializable {
     public Task(User user) {
         mUserId = user.getId();
         mTaskId = UUID.randomUUID();
+        mTaskDate=new Date();
     }
 
     public Long getId() {
@@ -95,11 +96,11 @@ public class Task implements Serializable {
         mTaskState = taskState;
     }
 
-    public String getTaskDate() {
+    public Date getTaskDate() {
         return mTaskDate;
     }
 
-    public void setTaskDate(String date) {
+    public void setTaskDate(Date date) {
         mTaskDate = date;
     }
 

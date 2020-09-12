@@ -30,7 +30,6 @@ public class User implements Serializable {
     private UserType mUserType;
 
     public User(String userName, String password, UserType userType) {
-        //mTasks = new ArrayList<>();
         mUserName = userName;
         mPassword = password;
         mUserType = userType;
@@ -109,11 +108,18 @@ public class User implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", mUserName='" + mUserName + '\'' +
+                ", mPassword='" + mPassword + '\'' +
+                ", mDateCreated=" + mDateCreated +
+                ", mUserType=" + mUserType +
+                '}';
+    }
 
-
-
-
-    //
+//
 //    private String username;
 //    private String password;
 //    private UserType userType;

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
 import com.example.taskmanagerhw14.Utils.UserType;
 import com.example.taskmanagerhw14.model.User;
@@ -30,7 +31,7 @@ public class SignInFragment extends Fragment {
     private EditText mEditTextUsername;
     private EditText mEditTextPassword;
     private Callbacks mCallBacks;
-    private UserRepository mUserRepository;
+    private UserDBRoomRepository mUserDBRoomRepository;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -47,9 +48,9 @@ public class SignInFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 //        setHasOptionsMenu(false);
-        mUserRepository = UserRepository.getInstance();
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
     }
 
     @Override
@@ -85,15 +86,16 @@ public class SignInFragment extends Fragment {
                 if (username.equals("") | password.equals("")) {
                     Toast.makeText(getActivity(), "please Enter Username and Password.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mUserRepository.checkUserExist(username, password))
+                    if (UserDBRoomRepository.checkUserExist(mUserDBRoomRepository, username, password) != null)
                         Toast.makeText(getActivity(), "This username and password already exist!", Toast.LENGTH_SHORT).show();
                     else {
                         User user = new User(username, password, UserType.USER);
-                        mUserRepository.addUser(user);
+                        mUserDBRoomRepository.add(user);
                         mCallBacks.onBackClicked();
                     }
                 }
             }
+
         });
     }
 
@@ -119,9 +121,5 @@ public class SignInFragment extends Fragment {
         void onBackClicked();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-    }
+
 }

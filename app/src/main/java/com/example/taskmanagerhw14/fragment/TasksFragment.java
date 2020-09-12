@@ -19,10 +19,9 @@ import android.widget.TextView;
 
 
 import com.example.taskmanagerhw14.R;
-import com.example.taskmanagerhw14.Repository.IRepository;
 import com.example.taskmanagerhw14.Repository.TaskDBRepository;
-import com.example.taskmanagerhw14.Repository.TasksRepository;
-import com.example.taskmanagerhw14.Repository.UserRepository;
+import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
+import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,12 +38,11 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
     public static final String ADD_TASK_FRAGMENT_DIALOG_TAG = "AddTaskFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
-    public static final String ARG_USERNAME = "ArgsUsername";
+    public static final String ARG_USER_ID = "ArgsUsername";
     public static final String BUNDLE_USERNAME = "bundleUsername";
     public static final String BUNDLE_TASK_STATE = "BundleTaskState";
-    //    private TasksRepository mTasksRepository;
-    private IRepository mTasksRepository;
 
+    private TaskDBRoomRepository mTaskDBRoomRepository;
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
     private FloatingActionButton mFloatingActionButtonAdd;
@@ -54,8 +52,8 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     private Callbacks mCallbacks;
 
 
-    private String mUsername;
-    private UserRepository mUserRepository;
+    private long mUserId;
+    private UserDBRoomRepository mUserDBRoomRepository;
 
     public TaskAdapter getAdapter() {
         return mAdapter;
@@ -65,12 +63,12 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         // Required empty public constructor
     }
 
-    public static TasksFragment newInstance(TaskState taskState, String username) {
+    public static TasksFragment newInstance(TaskState taskState, long userId) {
 
         TasksFragment fragment = new TasksFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_TASK_STATE, taskState);
-        args.putString(ARG_USERNAME, username);
+        args.putLong(ARG_USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,9 +76,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTasksRepository = TaskDBRepository.getInstance(getActivity());
+        mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
 //        mTasksRepository = TasksRepository.getInstance();
-        mUserRepository = UserRepository.getInstance();
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
 
     }
 
@@ -88,17 +86,17 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mUsername = savedInstanceState.getString(BUNDLE_USERNAME);
+            mUserId = savedInstanceState.getLong(BUNDLE_USERNAME);
             mTaskState = (TaskState) savedInstanceState.getSerializable(BUNDLE_TASK_STATE);
 
         } else {
-            mUsername = getArguments().getString(ARG_USERNAME);
+            mUserId = getArguments().getLong(ARG_USER_ID);
             mTaskState = (TaskState) getArguments().getSerializable(ARG_TASK_STATE);
         }
 //        mTasksRepository = TasksRepository.getInstance();
-        mTasksRepository = TaskDBRepository.getInstance(getActivity());
+        mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
 
-        mUserRepository = UserRepository.getInstance();
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance();
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         findViews(view);
@@ -130,7 +128,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AddTaskFragmentFragment addTaskFragmentFragment = AddTaskFragmentFragment.newInstance(mUsername);
+                AddTaskFragmentFragment addTaskFragmentFragment = AddTaskFragmentFragment.newInstance(mUserId);
                 addTaskFragmentFragment.show(getActivity().getSupportFragmentManager(), ADD_TASK_FRAGMENT_DIALOG_TAG);
                 updateUI();
             }
@@ -143,15 +141,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         void onAddTaskClicked();
     }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        if (context instanceof Callbacks)
-//            mCallbacks = (Callbacks) context;
-//        else {
-//            throw new ClassCastException(context.toString() + "you must implement onAddTaskClicked");
-//        }
-//    }
+//
 
     private class TaskHolder extends RecyclerView.ViewHolder {
 
@@ -198,7 +188,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             mImageViewDeleteTask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mTasksRepository.delete(mTask.getId());
+                    mTaskDBRoomRepository.remove(mTask);
                     updateUI();
                 }
             });
@@ -278,15 +268,15 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public void updateUI() {
 
         List<Task> tasks;
-        mUserRepository = UserRepository.getInstance();
-        if (mUserRepository.getUserType(mUsername) != null) {
-            switch (mUserRepository.getUserType(mUsername)) {
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
+        if (mUserDBRoomRepository.getUserType(mUserId) != null) {
+            switch (mUserDBRoomRepository.getUserType(mUserId)) {
                 case USER:
-                    tasks = mTasksRepository.getList(mTaskState, mUsername);
+                    tasks = mTaskDBRoomRepository.getUserTakLIstByState(mTaskState, mUserId);
                     adapter(tasks);
                     break;
                 case ADMIN:
-                    tasks = mTasksRepository.getList(mTaskState);
+                    tasks = mTaskDBRoomRepository.getList(mTaskState);
                     adapter(tasks);
             }
         }
@@ -305,7 +295,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         if (tasks.size() == 0) {
             mLinearLayout1.setVisibility(View.GONE);
             mLinearLayout2.setVisibility(View.VISIBLE);
-        } else if (mTasksRepository.getList().size() != 0) {
+        } else if (mTaskDBRoomRepository.getList().size() != 0) {
             mLinearLayout1.setVisibility(View.VISIBLE);
             mLinearLayout2.setVisibility(View.GONE);
         }
@@ -321,7 +311,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(BUNDLE_USERNAME, mUsername);
+        outState.putString(BUNDLE_USERNAME, mUserId);
         outState.putSerializable(BUNDLE_TASK_STATE, mTaskState);
     }
 }

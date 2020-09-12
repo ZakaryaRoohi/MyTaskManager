@@ -12,5 +12,5 @@ import com.example.taskmanagerhw14.model.User;
 public abstract class TaskManagerDB extends RoomDatabase {
 
     public abstract TaskDataBaseDAO taskDataBaseDAO();
-
+    public abstract UserDataBaseDAO userDateBaseDAO();
 }

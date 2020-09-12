@@ -88,9 +88,23 @@ public class Task {
     public Task(String username) {
         this(UUID.randomUUID());
         this.mUsername = username;
+        mTaskDate = new Date();
+
     }
     public Task(){
         this(UUID.randomUUID());
 
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "mId=" + mId +
+                ", mTaskTitle='" + mTaskTitle + '\'' +
+                ", mTaskState=" + mTaskState +
+                ", mTaskDescription='" + mTaskDescription + '\'' +
+                ", mTaskDate=" + mTaskDate +
+                ", mUsername='" + mUsername + '\'' +
+                '}';
     }
 }

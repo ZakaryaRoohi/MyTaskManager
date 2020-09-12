@@ -37,6 +37,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
      */
     private static final String ARG_TASK_STATE = "ArgTaskState";
     public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
+    public static final String ADD_TASK_FRAGMENT_DIALOG_TAG = "AddTaskFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
     public static final String ARG_USERNAME = "ArgsUsername";
     public static final String BUNDLE_USERNAME = "bundleUsername";
@@ -128,19 +129,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         mFloatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Task newTask = new Task();
-//                mTasksRepository.addTask(newTask);
-//                updateUI();
-//                TaskDetailFragment taskDetailFragment =  TaskDetailFragment.newInstance(newTask.getId());
-//                taskDetailFragment.setTargetFragment(TasksFragment.this,TASK_DETAIL_REQUEST_CODE);
-//                taskDetailFragment.show(getFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
 
-//                mCallbacks.onAddTaskClicked();
-//                Task newTask = new Task(mUsername);
-//                mTasksRepository.addTask(newTask);
-//                mTasksRepository.insert(newTask);
-                TaskDetailFragment taskDetailFragment = TaskDetailFragment.newInstance(mUsername);
-                taskDetailFragment.show(getActivity().getSupportFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
+                AddTaskFragmentFragment addTaskFragmentFragment = AddTaskFragmentFragment.newInstance(mUsername);
+                addTaskFragmentFragment.show(getActivity().getSupportFragmentManager(), ADD_TASK_FRAGMENT_DIALOG_TAG);
                 updateUI();
             }
         });
@@ -300,22 +291,6 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             }
         }
 
-//        List<Task> tasks = mTasksRepository.getList(mTaskState, mUsername);
-//        if (mAdapter == null) {
-//            mAdapter = new TaskAdapter(tasks);
-//            mRecyclerView.setAdapter(mAdapter);
-//        } else {
-//            mAdapter.setTasks(tasks);
-//            mAdapter.notifyDataSetChanged();
-//
-//        }
-//        if (tasks.size() == 0) {
-//            mLinearLayout1.setVisibility(View.GONE);
-//            mLinearLayout2.setVisibility(View.VISIBLE);
-//        } else if (mTasksRepository.getList().size() != 0) {
-//            mLinearLayout1.setVisibility(View.VISIBLE);
-//            mLinearLayout2.setVisibility(View.GONE);
-//        }
     }
 
     private void adapter(List<Task> tasks) {
@@ -336,10 +311,6 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         }
     }
 
-    public void update() {
-//    mAdapter.notifyDataSetChanged();
-        mRecyclerView.setAdapter(mAdapter);
-    }
 
     @Override
     public void onResume() {

@@ -55,7 +55,7 @@ public class TaskDBRepository implements IRepository<Task> {
     public List<Task> getList(TaskState taskState, String username) {
 
         List<Task> tasks = new ArrayList<>();
-        String selection = TaskDBSchema.TaskTable.COLS.STATE + TaskDBSchema.TaskTable.COLS.USERNAME + "=?";
+        String selection = TaskDBSchema.TaskTable.COLS.STATE + "=?" + "and" + TaskDBSchema.TaskTable.COLS.USERNAME + "=?";
         String[] selectionArgs = new String[]{taskState.toString(), username};
         TaskCursorWrapper cursorWrapper = queryTasks(selection, selectionArgs);
         try {

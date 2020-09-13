@@ -230,7 +230,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
                 @Override
                 public void onClick(View v) {
                     mPhotoFile = mTaskDBRoomRepository.getPhotoFile(getActivity(), mTask);
-                    if (mPhotoFile != null) {
+                    if (mPhotoFile != null&&mPhotoFile.exists()) {
                         ImageViewFragment imageViewFragment = new ImageViewFragment().newInstance(mPhotoFile);
                         imageViewFragment.setTargetFragment(TasksFragment.this, REQUEST_CODE_IMAGE_VIEW_PICTURE);
                         imageViewFragment.show(getFragmentManager(), DIALOG_TAG_IMAGE_VIEW_FRAGMENT);

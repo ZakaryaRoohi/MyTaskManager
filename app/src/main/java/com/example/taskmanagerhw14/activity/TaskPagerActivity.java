@@ -3,6 +3,7 @@ package com.example.taskmanagerhw14.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -11,12 +12,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.taskmanagerhw14.R;
 
 import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
+import com.example.taskmanagerhw14.Utils.PictureUtils;
 import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.fragment.AddTaskFragmentFragment;
 import com.example.taskmanagerhw14.fragment.TaskDetailFragment;
@@ -25,18 +31,24 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.List;
 
-public class TaskPagerActivity extends AppCompatActivity implements TaskDetailFragment.Callbacks , AddTaskFragmentFragment.Callbacks {
+
+public class TaskPagerActivity extends AppCompatActivity implements TaskDetailFragment.Callbacks , AddTaskFragmentFragment.Callbacks,TasksFragment.Callbacks {
 
     public static final String EXTRA_BUNDLE_USER_ID = "com.example.taskmanagerhw13.activity.extraBundleUsername";
     public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
     public static final String BUNDLE_USER_ID = "bundleUserId";
+    private static final String FILE_PROVIDER_AUTHORITY = "fileProvider";
+    private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
 //    private TasksRepository mTasksRepository;
 private TaskDBRoomRepository mTaskDBRoomRepository;
 
@@ -142,6 +154,41 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
     public void updateTasksFragment(TaskState taskState, String username) {
 
     }
+
+    private File mPhotoFile;
+    @Override
+    public void onImageClicked() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            if (mPhotoFile == null)
+//                return;
+//
+//            Uri photoURI = FileProvider.getUriForFile(
+//                    this,
+//                    FILE_PROVIDER_AUTHORITY,
+//                    mPhotoFile);
+//
+//            grantTemPermissionForTakePicture(takePictureIntent, photoURI);
+//
+//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//            startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
+//        }
+    }
+//    private void grantTemPermissionForTakePicture(Intent takePictureIntent, Uri photoURI) {
+//        PackageManager packageManager = getPackageManager();
+//        List<ResolveInfo> activities = packageManager.queryIntentActivities(
+//                takePictureIntent,
+//                PackageManager.MATCH_DEFAULT_ONLY);
+//
+//        for (ResolveInfo activity : activities) {
+//           grantUriPermission(activity.activityInfo.packageName,
+//                    photoURI,
+//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//        }
+//    }
+
+
+
 
 
     private class TaskPagerAdapter extends FragmentStateAdapter {

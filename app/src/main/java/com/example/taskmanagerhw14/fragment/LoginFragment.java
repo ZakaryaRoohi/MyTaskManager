@@ -93,8 +93,6 @@ public class LoginFragment extends Fragment {
                 else {
 
                     Long userId = UserDBRoomRepository.checkUserExist(mUserDBRoomRepository,username,password);
-                    Toast.makeText(getActivity(), "userId" + mUserDBRoomRepository.getList().size(), Toast.LENGTH_SHORT).show();
-
                     Intent intent = TaskPagerActivity.newIntent(getContext(),userId);
                     if(userId!=null)
                     startActivity(intent);

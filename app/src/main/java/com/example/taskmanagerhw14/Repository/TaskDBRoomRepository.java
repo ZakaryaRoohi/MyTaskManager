@@ -26,12 +26,17 @@ public class TaskDBRoomRepository {
             sTaskRepository = new TaskDBRoomRepository();
         return sTaskRepository;
     }
-    public List<Task> getUserTakListByState(TaskState taskState , Long userID){
+    public List<Task> getUserTaskListByState(TaskState taskState , Long userID){
         return mDataBase.taskDataBaseDAO().getUserTasksByState(taskState,userID);
     }
     public List<Task> getTaskListByState(TaskState taskState ){
         return mDataBase.taskDataBaseDAO().getTasks(taskState);
     }
+
+    public List<Task> getUserTask(Long userId ){
+        return mDataBase.taskDataBaseDAO().getUserTasks(userId);
+    }
+
 
     public Task get(Long id) {
         return mDataBase.taskDataBaseDAO().getTask(id);

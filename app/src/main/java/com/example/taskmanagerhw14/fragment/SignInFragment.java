@@ -48,8 +48,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-//        setHasOptionsMenu(false);
+
         mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
     }
 
@@ -86,10 +85,11 @@ public class SignInFragment extends Fragment {
                 if (username.equals("") | password.equals("")) {
                     Toast.makeText(getActivity(), "please Enter Username and Password.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (UserDBRoomRepository.checkUserExist(mUserDBRoomRepository, username, password) != null)
+                    if (UserDBRoomRepository.checkUserExist(mUserDBRoomRepository, username) != null)
                         Toast.makeText(getActivity(), "This username and password already exist!", Toast.LENGTH_SHORT).show();
                     else {
                         User user = new User(username, password, UserType.USER);
+                        user.setUserType(UserType.USER);
                         mUserDBRoomRepository.add(user);
                         mCallBacks.onBackClicked();
                     }

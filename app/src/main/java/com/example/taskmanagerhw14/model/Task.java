@@ -138,7 +138,18 @@ public class Task implements Serializable {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", mTaskId=" + mTaskId +
+                ", mUserId=" + mUserId +
+                ", mTaskTitle='" + mTaskTitle + '\'' +
+                ", mTaskDescription='" + mTaskDescription + '\'' +
+                ", mTaskState=" + mTaskState +
+                ", mTaskDate=" + mTaskDate +
+                '}';
+    }
 //    private UUID mId;
 //    private String mTaskTitle;
 //    private TaskState mTaskState;

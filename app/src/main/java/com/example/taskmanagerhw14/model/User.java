@@ -101,7 +101,7 @@ public class User implements Serializable {
             switch (value) {
                 case "ADMIN":
                     return UserType.ADMIN;
-                case "NORMAL":
+                case "USER":
                     return UserType.USER;
             }
             return null;

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, mLoginFragment)
+                .addToBackStack("LoginFragment")
                 .commit();
 
     }
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container, UserListFragment.newInstance())
+                        .addToBackStack("UserListFragment")
                         .commit();
                 return true;
             default:

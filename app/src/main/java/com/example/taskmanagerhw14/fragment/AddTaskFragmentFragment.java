@@ -70,7 +70,7 @@ public class AddTaskFragmentFragment extends DialogFragment {
         User user =mUserDBRoomRepository.get(mUserId);
                 mTask = new Task(user);
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
-        Toast.makeText(getContext(), ":  " + mUserId, Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -115,7 +115,9 @@ public class AddTaskFragmentFragment extends DialogFragment {
                     mTask.setTaskDescription((mEditTextDescription.getText().toString()));
                     mTask.setUserId(mUserId);
                     mTaskDBRoomRepository.insert(mTask);
+
                     mCallbacks.updateTasksFragment(mTask.getTaskState(), mTask.getUserId().toString());
+//                    Toast.makeText(getActivity(), "d:   "+mTask.toString(), Toast.LENGTH_SHORT).show();
                     getDialog().cancel();
 //                    TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 //                    tasksFragment.updateUI();

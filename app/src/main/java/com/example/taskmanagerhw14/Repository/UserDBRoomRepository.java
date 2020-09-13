@@ -75,4 +75,11 @@ public class UserDBRoomRepository {
         }
         return null;
     }
+    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository,String username) {
+        for (User user : userDBRoomRepository.getList()) {
+            if (user.getUserName().equals(username))
+                return user.getId();
+        }
+        return null;
+    }
 }

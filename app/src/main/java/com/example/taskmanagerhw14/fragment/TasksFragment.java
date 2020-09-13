@@ -258,6 +258,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             mImageViewDeleteTask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mPhotoFile = mTaskDBRoomRepository.getPhotoFile(getActivity(), mTask);
+                    if(mPhotoFile.exists())
+                        mPhotoFile.delete();
                     mTaskDBRoomRepository.remove(mTask);
                     updateUI();
                 }

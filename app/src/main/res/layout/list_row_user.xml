@@ -9,17 +9,38 @@
     android:orientation="horizontal">
 
 
-    <ImageView
-        android:id="@+id/list_row_user_image"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="80dp"
         android:layout_height="95dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/circular_image_view"
+        android:layout_marginLeft="5dp"
         android:gravity="center"
-        android:textColor="#E6E0E0"
-        android:textSize="16dp" />
+        >
+        <ImageView
+            android:id="@+id/list_row_user_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+
+            tools:ignore="MissingConstraints" />
+
+
+        <ImageView
+            android:id="@+id/image_view_edit_user_picture"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_add_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/list_row_Task_image"
+            app:layout_constraintHorizontal_bias="0.107"
+
+            app:layout_constraintStart_toStartOf="@+id/list_row_Task_image"
+            app:layout_constraintTop_toTopOf="@+id/list_row_Task_image"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="240dp"

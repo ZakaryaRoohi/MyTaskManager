@@ -6,8 +6,10 @@ import androidx.room.Room;
 
 import com.example.taskmanagerhw14.Utils.UserType;
 import com.example.taskmanagerhw14.database.room.TaskManagerDB;
+import com.example.taskmanagerhw14.model.Task;
 import com.example.taskmanagerhw14.model.User;
 
+import java.io.File;
 import java.util.List;
 
 public class UserDBRoomRepository {
@@ -81,5 +83,9 @@ public class UserDBRoomRepository {
                 return user.getId();
         }
         return null;
+    }
+    public File getPhotoFile(Context context, User user) {
+        File photoFile = new File(context.getFilesDir(), user.getPhotoFileName());
+        return photoFile;
     }
 }

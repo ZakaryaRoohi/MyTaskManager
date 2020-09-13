@@ -118,7 +118,9 @@ public class User implements Serializable {
                 ", mUserType=" + mUserType +
                 '}';
     }
-
+    public String getPhotoFileName() {
+        return "IMG_PROFILE_" + getUserName() + ".jpg";
+    }
 //
 //    private String username;
 //    private String password;

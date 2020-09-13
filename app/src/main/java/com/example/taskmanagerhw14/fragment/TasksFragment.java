@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -53,6 +54,10 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public static final String BUNDLE_USER_ID = "bundleUsername";
     public static final String BUNDLE_TASK_STATE = "BundleTaskState";
 
+    public static final int REQUEST_CODE_IMAGE_VIEW_PICTURE = 3;
+    public static final String DIALOG_TAG_IMAGE_VIEW_FRAGMENT = "dialogTagImageViewFragment";
+    private static final String FILE_PROVIDER_AUTHORITY = "com.example.taskmanagerhw14t.fileProvider";
+
     private TaskDBRoomRepository mTaskDBRoomRepository;
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
@@ -62,7 +67,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     private LinearLayout mLinearLayout2;
     private Callbacks mCallbacks;
     private String mUsername;
-
+    private File tempPhotoUri;
     private long mUserId;
     private UserDBRoomRepository mUserDBRoomRepository;
 
@@ -165,10 +170,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     //
 
     private class TaskHolder extends RecyclerView.ViewHolder {
-        private static final String FILE_PROVIDER_AUTHORITY = "fileProvider";
+        private static final String FILE_PROVIDER_AUTHORITY = "com.example.taskmanagerhw14t.fileProvider";
         private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
-        public static final int REQUEST_CODE_IMAGE_VIEW_PICTURE = 3;
-        public static final String DIALOG_TAG_IMAGE_VIEW_FRAGMENT = "dialogTagImageViewFragment";
+
 
         private TextView mTextViewTaskTittle;
         private ImageView mImageViewTaskPicture;
@@ -190,7 +194,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             mImageViewShareTask = itemView.findViewById(R.id.image_view_share);
             mImageViewDeleteTask = itemView.findViewById(R.id.image_view_delete_task);
             mTextViewUser = itemView.findViewById(R.id.text_view_task_user);
-            mImageViewEditPicture=itemView.findViewById(R.id.image_view_edit_picture);
+            mImageViewEditPicture = itemView.findViewById(R.id.image_view_edit_picture);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,9 +209,18 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             mImageViewEditPicture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "take pic", Toast.LENGTH_SHORT).show();
+                    mPhotoFile = mTaskDBRoomRepository.getPhotoFile(getActivity(), mTask);
+
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+
+                        Uri photoURI = FileProvider.getUriForFile(
+                                getActivity(),
+                                FILE_PROVIDER_AUTHORITY,
+                                mPhotoFile);
+                        grantTemPermissionForTakePicture(takePictureIntent, photoURI);
+                        tempPhotoUri = mPhotoFile;
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
                     }
                 }
@@ -216,21 +229,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-//                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-//                        if (mPhotoFile == null)
-//                            return;
-//
-//                        Uri photoURI = FileProvider.getUriForFile(
-//                                getActivity(),
-//                                FILE_PROVIDER_AUTHORITY,
-//                                mPhotoFile);
-//
-//                        grantTemPermissionForTakePicture(takePictureIntent, photoURI);
-//
-//                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                        startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
-//                    }
+                    mPhotoFile = mTaskDBRoomRepository.getPhotoFile(getActivity(), mTask);
                     if (mPhotoFile != null) {
                         ImageViewFragment imageViewFragment = new ImageViewFragment().newInstance(mPhotoFile);
                         imageViewFragment.setTargetFragment(TasksFragment.this, REQUEST_CODE_IMAGE_VIEW_PICTURE);
@@ -279,10 +278,13 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         }
 
         private void updatePhotoView() {
+            mPhotoFile = mTaskDBRoomRepository.getPhotoFile(getActivity(), mTask);
             if (mPhotoFile == null || !mPhotoFile.exists()) {
                 mImageViewTaskPicture.setImageDrawable(getResources().getDrawable(R.drawable.ic_person));
+
             } else {
                 Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+
                 mImageViewTaskPicture.setImageBitmap(bitmap);
             }
         }
@@ -317,7 +319,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
                 itemView.setBackgroundColor(Color.WHITE);
 
             mTextViewTaskTittle.setText(task.getTaskTitle());
-//            mImageViewTaskPicture.setText(task.getTaskState().toString());Todo
+
             mTextViewTaskDate.setText(task.getTaskDate().toString());
             mTextViewUser.setText(mUserDBRoomRepository.get(task.getUserId()).getUserName());
             updatePhotoView();
@@ -329,14 +331,14 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK || data == null)
             return;
-//        else if (requestCode == REQUEST_CODE_IMAGE_CAPTURE) {
+        else if (requestCode == REQUEST_CODE_IMAGE_VIEW_PICTURE) {
 //            updatePhotoView();
-//            Uri photoUri = FileProvider.getUriForFile(
-//                    getActivity(),
-//                    FILE_PROVIDER_AUTHORITY,
-//                    mPhotoFile);
-//            getActivity().revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//        }
+            Uri photoUri = FileProvider.getUriForFile(
+                    getActivity(),
+                    FILE_PROVIDER_AUTHORITY,
+                    tempPhotoUri);
+            getActivity().revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
     }
 
     private class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {

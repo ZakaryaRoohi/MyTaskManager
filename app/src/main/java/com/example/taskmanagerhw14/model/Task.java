@@ -150,6 +150,12 @@ public class Task implements Serializable {
                 ", mTaskDate=" + mTaskDate +
                 '}';
     }
+
+    public String getPhotoFileName() {
+        return "IMG_" + getTaskId() + ".jpg";
+    }
+
+
 //    private UUID mId;
 //    private String mTaskTitle;
 //    private TaskState mTaskState;

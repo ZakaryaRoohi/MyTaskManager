@@ -8,6 +8,7 @@ import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.database.room.TaskManagerDB;
 import com.example.taskmanagerhw14.model.Task;
 
+import java.io.File;
 import java.util.List;
 
 public class TaskDBRoomRepository {
@@ -26,14 +27,16 @@ public class TaskDBRoomRepository {
             sTaskRepository = new TaskDBRoomRepository();
         return sTaskRepository;
     }
-    public List<Task> getUserTaskListByState(TaskState taskState , Long userID){
-        return mDataBase.taskDataBaseDAO().getUserTasksByState(taskState,userID);
+
+    public List<Task> getUserTaskListByState(TaskState taskState, Long userID) {
+        return mDataBase.taskDataBaseDAO().getUserTasksByState(taskState, userID);
     }
-    public List<Task> getTaskListByState(TaskState taskState ){
+
+    public List<Task> getTaskListByState(TaskState taskState) {
         return mDataBase.taskDataBaseDAO().getTasks(taskState);
     }
 
-    public List<Task> getUserTask(Long userId ){
+    public List<Task> getUserTask(Long userId) {
         return mDataBase.taskDataBaseDAO().getUserTasks(userId);
     }
 
@@ -52,10 +55,11 @@ public class TaskDBRoomRepository {
         mDataBase.taskDataBaseDAO().deleteTask(task);
     }
 
-    public void update(Task task){
+    public void update(Task task) {
         mDataBase.taskDataBaseDAO().updateTask(task);
 
     }
+
     public void removeAllTasks() {
         mDataBase.taskDataBaseDAO().deleteTasks();
     }
@@ -65,4 +69,9 @@ public class TaskDBRoomRepository {
             remove(task);
         }
     }
+    public File getPhotoFile(Context context, Task task) {
+        File photoFile = new File(context.getFilesDir(), task.getPhotoFileName());
+        return photoFile;
+    }
+
 }

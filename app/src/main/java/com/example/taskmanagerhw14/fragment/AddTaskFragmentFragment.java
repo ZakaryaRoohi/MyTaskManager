@@ -48,6 +48,7 @@ public class AddTaskFragmentFragment extends DialogFragment {
     private Long mUserId;
     private TaskDBRoomRepository mTaskDBRoomRepository;
     private UserDBRoomRepository mUserDBRoomRepository;
+
     public AddTaskFragmentFragment() {
         // Required empty public constructor
     }
@@ -66,9 +67,9 @@ public class AddTaskFragmentFragment extends DialogFragment {
         if (getArguments() != null) {
             mUserId = getArguments().getLong(ARG_USER_ID);
         }
-        mUserDBRoomRepository= UserDBRoomRepository.getInstance(getContext());
-        User user =mUserDBRoomRepository.get(mUserId);
-                mTask = new Task(user);
+        mUserDBRoomRepository = UserDBRoomRepository.getInstance(getContext());
+        User user = mUserDBRoomRepository.get(mUserId);
+        mTask = new Task(user);
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
 
 
@@ -189,7 +190,6 @@ public class AddTaskFragmentFragment extends DialogFragment {
             return;
 
         if (requestCode == REQUEST_CODE_DATE_PICKER) {
-            //get response from intent extra, which is user selected date
             Date userSelectedDate = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_USER_SELECTED_DATE);
 
             mTask.setTaskDate(userSelectedDate);

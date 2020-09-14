@@ -25,13 +25,15 @@ public class UserDBRoomRepository {
                 .build();
 
     }
+
     public static UserDBRoomRepository getInstance(Context context) {
         sContext = context.getApplicationContext();
-        if (sUserRepository == null){
+        if (sUserRepository == null) {
             sUserRepository = new UserDBRoomRepository();
-            if (sUserRepository.getList().size()==0){
-            User admin = new User("admin","1", UserType.ADMIN);
-        sUserRepository.add(admin);}
+            if (sUserRepository.getList().size() == 0) {
+                User admin = new User("admin", "1", UserType.ADMIN);
+                sUserRepository.add(admin);
+            }
         }
         return sUserRepository;
     }
@@ -45,6 +47,7 @@ public class UserDBRoomRepository {
 
         return mDatabase.userDateBaseDAO().getUser(id);
     }
+
     public User get(String userName) {
         return mDatabase.userDateBaseDAO().getUser(userName);
     }
@@ -54,6 +57,7 @@ public class UserDBRoomRepository {
         mDatabase.userDateBaseDAO().insertUser(user);
 
     }
+
     public void remove(User user) {
         mDatabase.userDateBaseDAO().deleteUser(user);
 
@@ -63,27 +67,32 @@ public class UserDBRoomRepository {
         mDatabase.userDateBaseDAO().deleteAllUsers();
 
     }
+
     public void update(User user) {
         mDatabase.userDateBaseDAO().updateUser(user);
     }
-    public UserType getUserType(Long userId){
+
+    public UserType getUserType(Long userId) {
         User findUser = mDatabase.userDateBaseDAO().getUser(userId);
         return findUser.getUserType();
     }
-    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository,String username, String password) {
+
+    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository, String username, String password) {
         for (User user : userDBRoomRepository.getList()) {
             if (user.getUserName().equals(username) && user.getPassword().equals(password))
                 return user.getId();
         }
         return null;
     }
-    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository,String username) {
+
+    public static Long checkUserExist(UserDBRoomRepository userDBRoomRepository, String username) {
         for (User user : userDBRoomRepository.getList()) {
             if (user.getUserName().equals(username))
                 return user.getId();
         }
         return null;
     }
+
     public File getPhotoFile(Context context, User user) {
         File photoFile = new File(context.getFilesDir(), user.getPhotoFileName());
         return photoFile;

@@ -69,6 +69,7 @@ public class TaskDBRoomRepository {
             remove(task);
         }
     }
+
     public File getPhotoFile(Context context, Task task) {
         File photoFile = new File(context.getFilesDir(), task.getPhotoFileName());
         return photoFile;

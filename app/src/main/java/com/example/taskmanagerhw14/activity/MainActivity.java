@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
         mLoginFragment = LoginFragment.newInstance();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-//        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, mLoginFragment)
@@ -47,9 +46,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (mFragmentManager.getBackStackEntryCount() > 0)
-            mFragmentManager.popBackStackImmediate();
-        else super.onBackPressed();
+//        if (mFragmentManager.getBackStackEntryCount() > 0)
+//            mFragmentManager.popBackStackImmediate();
+//        else super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, SignInFragment.newInstance())
+                .addToBackStack("SignInFragment")
                 .commit();
 
     }

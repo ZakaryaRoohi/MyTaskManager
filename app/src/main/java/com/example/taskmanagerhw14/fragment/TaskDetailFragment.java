@@ -38,8 +38,8 @@ public class TaskDetailFragment extends DialogFragment {
     public static final int REQUEST_CODE_DATE_PICKER = 0;
     public static final String BUNDLE_TASK_ID = "bundleTaskId";
 
-//    private TasksRepository mTasksRepository;
-private TaskDBRoomRepository mTaskDBRoomRepository;
+    //    private TasksRepository mTasksRepository;
+    private TaskDBRoomRepository mTaskDBRoomRepository;
 
     private Task mTask;
 
@@ -70,10 +70,10 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            mTaskId =  savedInstanceState.getLong(BUNDLE_TASK_ID);
-        }else{
-            mTaskId =  getArguments().getLong(ARG_TASK_ID);
+        if (savedInstanceState != null) {
+            mTaskId = savedInstanceState.getLong(BUNDLE_TASK_ID);
+        } else {
+            mTaskId = getArguments().getLong(ARG_TASK_ID);
         }
         mTaskDBRoomRepository = TaskDBRoomRepository.getInstance(getActivity());
         mTask = mTaskDBRoomRepository.get(mTaskId);
@@ -170,9 +170,9 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
                     mTask.setTaskTitle(mEditTextTaskTitle.getText().toString());
                     mTask.setTaskDescription((mEditTextDescription.getText().toString()));
 
-                        updateTask();
-                        mCallbacks.onSaveButtonClicked(mTask.getTaskState(), mTask.getUserId().toString());
-                        getDialog().cancel();
+                    updateTask();
+                    mCallbacks.onSaveButtonClicked(mTask.getTaskState(), mTask.getUserId().toString());
+                    getDialog().cancel();
 //                    TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 //                    tasksFragment.updateUI();
 

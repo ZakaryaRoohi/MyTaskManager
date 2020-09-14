@@ -27,7 +27,7 @@ import com.example.taskmanagerhw14.model.User;
  */
 public class SignInFragment extends Fragment {
     private Button mButtonSignUp;
-    private Button mButtonBack;
+
     private EditText mEditTextUsername;
     private EditText mEditTextPassword;
     private Callbacks mCallBacks;
@@ -65,18 +65,13 @@ public class SignInFragment extends Fragment {
 
     private void findAllView(View view) {
         mButtonSignUp = view.findViewById(R.id.button_Sign_up);
-        mButtonBack = view.findViewById(R.id.button_back);
+
         mEditTextPassword = view.findViewById(R.id.sign_in_edit_text_password);
         mEditTextUsername = view.findViewById(R.id.sign_in_edit_text_username);
     }
 
     private void setListeners() {
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallBacks.onBackClicked();
-            }
-        });
+
         mButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +86,8 @@ public class SignInFragment extends Fragment {
                         User user = new User(username, password, UserType.USER);
                         user.setUserType(UserType.USER);
                         mUserDBRoomRepository.add(user);
-                        mCallBacks.onBackClicked();
+//                        mCallBacks.onBackClicked();
+                        getActivity().onBackPressed();
                     }
                 }
             }

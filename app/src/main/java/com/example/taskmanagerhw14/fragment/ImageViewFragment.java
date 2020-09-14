@@ -34,10 +34,11 @@ public class ImageViewFragment extends DialogFragment {
     public ImageViewFragment() {
         // Required empty public constructor
     }
+
     public static ImageViewFragment newInstance(File imageFile) {
         ImageViewFragment fragment = new ImageViewFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_IMAGE_FILE,imageFile);
+        args.putSerializable(ARG_IMAGE_FILE, imageFile);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +54,7 @@ public class ImageViewFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_image_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_image_view, container, false);
 
         findViews(view);
 
@@ -63,7 +64,8 @@ public class ImageViewFragment extends DialogFragment {
 
         return view;
     }
-    private void findViews(View view){
+
+    private void findViews(View view) {
 
 
         mPhotoView = (PhotoView) view.findViewById(R.id.photo_view);

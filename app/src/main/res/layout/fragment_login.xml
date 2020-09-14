@@ -59,26 +59,46 @@
         app:layout_constraintTop_toBottomOf="@+id/log_in_edit_text_password"
         app:layout_constraintVertical_bias="0.2" />
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="69dp"
-        android:layout_height="36dp"
-        android:layout_gravity="start"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="64dp"
-        android:background="#00FFFFFF"
-        android:enabled="true"
-        android:text="Sign in"
-        android:textColor="#3C9CE8"
-        android:textSize="12dp"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.358"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/log_in_edit_text_password"
-        app:layout_constraintVertical_bias="0.42000002" />
+        app:layout_constraintTop_toBottomOf="@+id/button_login"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:text="No account?"
+            android:textSize="13dp"
+
+
+            app:layout_constraintVertical_bias="0.093"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/button_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#00FFFFFF"
+            android:enabled="true"
+            android:text="Sign in"
+            android:textColor="#3C9CE8"
+            android:textSize="18dp" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/loading"
@@ -96,19 +116,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_gravity="start"
-        android:layout_marginBottom="45dp"
-        android:text="No account?"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_login"
-        app:layout_constraintVertical_bias="0.093"
-        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

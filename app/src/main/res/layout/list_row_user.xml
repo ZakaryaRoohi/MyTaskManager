@@ -63,7 +63,7 @@
         <TextView
             android:id="@+id/text_view_user_date_created"
             android:layout_width="match_parent"
-            android:layout_height="28dp"
+            android:layout_height="38dp"
             android:layout_marginTop="4dp"
             android:hint="user date created"
             android:textSize="14dp" />

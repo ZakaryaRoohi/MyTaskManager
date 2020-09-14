@@ -55,6 +55,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
     public static final String BUNDLE_USER_ID = "bundleUsername";
     public static final String BUNDLE_TASK_STATE = "BundleTaskState";
 
+    public static final int REQUEST_CODE_IMAGE_ADD_TASK = 5;
     public static final int REQUEST_CODE_IMAGE_VIEW_PICTURE = 3;
     public static final String DIALOG_TAG_IMAGE_VIEW_FRAGMENT = "dialogTagImageViewFragment";
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.taskmanagerhw14t.fileProvider";
@@ -146,6 +147,7 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             public void onClick(View view) {
 
                 AddTaskFragmentFragment addTaskFragmentFragment = AddTaskFragmentFragment.newInstance(mUserId);
+                addTaskFragmentFragment.setTargetFragment(TasksFragment.this, REQUEST_CODE_IMAGE_ADD_TASK);
                 addTaskFragmentFragment.show(getActivity().getSupportFragmentManager(), ADD_TASK_FRAGMENT_DIALOG_TAG);
                 updateUI();
             }
@@ -343,6 +345,9 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
                     FILE_PROVIDER_AUTHORITY,
                     tempPhotoUri);
             getActivity().revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        else if(requestCode==REQUEST_CODE_IMAGE_ADD_TASK){
+            updateUI();
         }
     }
 

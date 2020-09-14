@@ -34,27 +34,7 @@
 
             </androidx.viewpager2.widget.ViewPager2>
 
-
         </LinearLayout>
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/layout2"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:gravity="right">-->
-
-        <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--                android:id="@+id/floating_action_button_add"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_gravity="right|bottom"-->
-        <!--                android:layout_marginRight="16dp"-->
-        <!--                android:layout_marginBottom="16dp"-->
-        <!--                android:clickable="true"-->
-        <!--                app:backgroundTint="#0F8378"-->
-        <!--                app:maxImageSize="90dp"-->
-        <!--                app:srcCompat="@mipmap/ic_floating_action_bar_foreground" />-->
-        <!--        </LinearLayout>-->
 
     </FrameLayout>
 

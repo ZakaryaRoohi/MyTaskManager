@@ -66,14 +66,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_item_setting:
                 Toast.makeText(this, "this Feature will be add soon!", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.menu_item_users:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, UserListFragment.newInstance())
-                        .addToBackStack("UserListFragment")
-                        .commit();
-                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

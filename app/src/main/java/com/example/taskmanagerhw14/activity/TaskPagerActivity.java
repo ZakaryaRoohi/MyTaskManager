@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,6 +28,7 @@ import com.example.taskmanagerhw14.Utils.TaskState;
 import com.example.taskmanagerhw14.fragment.AddTaskFragmentFragment;
 import com.example.taskmanagerhw14.fragment.TaskDetailFragment;
 import com.example.taskmanagerhw14.fragment.TasksFragment;
+import com.example.taskmanagerhw14.fragment.UserListFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -262,6 +264,7 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
                                 mTaskDBRoomRepository.removeAllTasks();
                                 viewPager.setAdapter(pagerAdapter);
                                 break;
+
                         }
                     }
                 });
@@ -275,6 +278,10 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
                 return true;
             case R.id.menu_item_log_out:
                     this.finish();
+                return true;
+            case R.id.menu_item_users:
+                Intent intent = UsersActivity.newIntent(TaskPagerActivity.this);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

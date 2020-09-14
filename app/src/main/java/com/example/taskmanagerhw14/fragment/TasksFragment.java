@@ -1,5 +1,6 @@
 package com.example.taskmanagerhw14.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -314,10 +315,11 @@ public class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
             return report;
         }
 
+
         public void bindTask(Task task) {
             mTask = task;
             if (getAdapterPosition() % 2 == 1)
-                itemView.setBackgroundColor(Color.LTGRAY);
+                itemView.setBackgroundColor(Color.CYAN);
             else
                 itemView.setBackgroundColor(Color.WHITE);
 

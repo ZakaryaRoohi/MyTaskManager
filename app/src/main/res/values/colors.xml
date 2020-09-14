@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="headings">#3797CF</color>
+    <color name="liteGray">#D8CFCF</color>
     <color name="solidCircle">#AAFFFFFF</color>
 </resources>

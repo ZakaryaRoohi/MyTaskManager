@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,10 +119,9 @@ public class AddTaskFragmentFragment extends DialogFragment {
                     mTaskDBRoomRepository.insert(mTask);
 
                     mCallbacks.updateTasksFragment(mTask.getTaskState(), mTask.getUserId().toString());
-//                    Toast.makeText(getActivity(), "d:   "+mTask.toString(), Toast.LENGTH_SHORT).show();
+
                     getDialog().cancel();
-//                    TasksFragment tasksFragment = (TasksFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//                    tasksFragment.updateUI();
+                    setResult();
 
                 }
             }
@@ -196,5 +196,11 @@ public class AddTaskFragmentFragment extends DialogFragment {
             mButtonDate.setText(mTask.getTaskDate().toString());
 
         }
+    }
+
+    private void setResult() {
+        Fragment fragment = getTargetFragment();
+        Intent intent = new Intent();
+        fragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
     }
 }

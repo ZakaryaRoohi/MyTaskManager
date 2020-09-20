@@ -160,36 +160,7 @@ private TaskDBRoomRepository mTaskDBRoomRepository;
     private File mPhotoFile;
     @Override
     public void onImageClicked() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            if (mPhotoFile == null)
-//                return;
-//
-//            Uri photoURI = FileProvider.getUriForFile(
-//                    this,
-//                    FILE_PROVIDER_AUTHORITY,
-//                    mPhotoFile);
-//
-//            grantTemPermissionForTakePicture(takePictureIntent, photoURI);
-//
-//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//            startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
-//        }
     }
-//    private void grantTemPermissionForTakePicture(Intent takePictureIntent, Uri photoURI) {
-//        PackageManager packageManager = getPackageManager();
-//        List<ResolveInfo> activities = packageManager.queryIntentActivities(
-//                takePictureIntent,
-//                PackageManager.MATCH_DEFAULT_ONLY);
-//
-//        for (ResolveInfo activity : activities) {
-//           grantUriPermission(activity.activityInfo.packageName,
-//                    photoURI,
-//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//        }
-//    }
-
-
 
 
 

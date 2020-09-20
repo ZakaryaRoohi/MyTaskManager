@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.taskmanagerhw14.R;
+import com.example.taskmanagerhw14.Repository.TaskDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserDBRoomRepository;
 import com.example.taskmanagerhw14.Repository.UserRepository;
 import com.example.taskmanagerhw14.Utils.PictureUtils;
@@ -47,7 +48,7 @@ public class UserListFragment extends Fragment {
     private UserDBRoomRepository mUserDBRoomRepository;
     private UserAdapter mAdapter;
     private File tempPhotoUri;
-
+    private TaskDBRoomRepository mTaskDBRoomRepository;
     public UserListFragment() {
         // Required empty public constructor
     }
@@ -64,6 +65,7 @@ public class UserListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUserDBRoomRepository = UserDBRoomRepository.getInstance(getActivity());
+        mTaskDBRoomRepository= TaskDBRoomRepository.getInstance(getActivity());
     }
 
     @Override
@@ -115,6 +117,7 @@ public class UserListFragment extends Fragment {
                             mUserDBRoomRepository.remove(mUser);
                             if (mPhotoFile.exists())
                                 mPhotoFile.delete();
+                            mTaskDBRoomRepository.removeAllUserTasks(mUser.getId());
                             updateUI();
                         }
                     });
